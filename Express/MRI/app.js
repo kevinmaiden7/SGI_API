@@ -14,7 +14,7 @@ admin.initializeApp({
 });
 let db = admin.firestore(); // Acesso a Firestore
 
-app.get('/', function(req, res){
+app.get('/incidentes', function(req, res){
     db.collection("incidentes").get().
     then(snapshot => {
       snapshot.forEach(doc => {
