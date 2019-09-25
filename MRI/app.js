@@ -73,6 +73,22 @@ app.get('/incidentes/autor/:id', async function (req, res) {
     res.send(results);
 });
 
+app.get('/lecciones', async function (req, res) {
+  results = [];
+  await db.collection('lecciones').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        let data = doc.data();
+        data.id = doc.id;
+        results.push(data);
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  res.send(results);
+});
+
 //POST
 
 app.post('/incidentes/', function (req, res) {
