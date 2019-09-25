@@ -7,6 +7,8 @@ const admin = require('firebase-admin');
 
 var app = express();
 
+let results = [];
+
 // Conexión a Firebase
 let serviceAccount = require('../firebase_key.json');
 admin.initializeApp({
@@ -15,7 +17,7 @@ admin.initializeApp({
 let db = admin.firestore(); // Acesso a Firestore
 
 app.get('/incidentes', async function (req, res) {
-  let results = [];
+  results = [];
   await db.collection('incidentes').get()
     .then(snapshot => {
       snapshot.forEach(doc => {
