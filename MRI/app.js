@@ -102,10 +102,19 @@ app.get('/lecciones', async function (req, res) {
 
 //POST
 
-app.post('/incidentes/', function (req, res) {
+app.post('/incidentes', function (req, res) {
   let data = req.body;
 
   db.collection('incidentes').add(data)
+    .then(() => {
+      res.send("Object added");
+    });
+});
+
+app.post('/lecciones/', function (req, res) {
+  let data = req.body;
+
+  db.collection('lecciones').add(data)
     .then(() => {
       res.send("Object added");
     });
