@@ -14,21 +14,23 @@ admin.initializeApp({
 });
 let db = admin.firestore(); // Acesso a Firestore
 
-app.get('/incidentes', function(req, res){
-    db.collection("incidentes").get().
-    then(snapshot => {
+app.get('/incidentes', async function(req, res){
+    let results = [];
+    await db.collection('incidentes').get()
+    .then(snapshot => {
       snapshot.forEach(doc => {
-        //console.log(doc.id, '=>', doc.data());   
-        res.json(doc.data());        
+        //console.log(doc.id, '=>', doc.data()); 
+        let data = doc.data();
+        data.id = doc.id;
+        results.push(data);  
+        //res.send(results);        
       });
     })
     .catch(error => { 
       console.log(error);
     });
-
-    /*res.json({
-      hello: 'world'
-    });*/
+    console.log(results)
+    res.send(results);
 });
 
 // view engine setup
