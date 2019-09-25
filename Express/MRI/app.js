@@ -14,23 +14,38 @@ admin.initializeApp({
 });
 let db = admin.firestore(); // Acesso a Firestore
 
-app.get('/incidentes', async function(req, res){
-    let results = [];
-    await db.collection('incidentes').get()
+app.get('/incidentes', async function (req, res) {
+  let results = [];
+  await db.collection('incidentes').get()
     .then(snapshot => {
       snapshot.forEach(doc => {
         //console.log(doc.id, '=>', doc.data()); 
         let data = doc.data();
         data.id = doc.id;
-        results.push(data);  
+        results.push(data);
         //res.send(results);        
       });
     })
-    .catch(error => { 
+    .catch(error => {
       console.log(error);
     });
-    console.log(results)
-    res.send(results);
+  res.send(results);
+});
+
+app.get('/incidentes/:id', function (req, res) {
+  id = req.params.id;
+
+  db.collection('incidentes').doc(id).get() 
+    .then(doc => {
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {
+        res.send(doc.data());
+      }
+    })
+    .catch(err => {
+      console.log('Error getting document', err);
+    });   
 });
 
 // view engine setup
@@ -40,12 +55,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
