@@ -16,6 +16,9 @@ admin.initializeApp({
 });
 let db = admin.firestore(); // Acesso a Firestore
 
+app.use(express.json());
+
+//GET
 app.get('/incidentes', async function (req, res) {
   results = [];
   await db.collection('incidentes').get()
@@ -69,6 +72,17 @@ app.get('/incidentes/autor/:id', async function (req, res) {
     });
 
     res.send(results);
+});
+
+//POST
+
+app.post('/incidentes/', function (req, res) {
+  let data = req.body;
+
+  db.collection('incidentes').add(data)
+    .then(() => {
+      res.send("Object added");
+    });
 });
 
 // view engine setup
