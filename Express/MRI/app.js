@@ -21,11 +21,9 @@ app.get('/incidentes', async function (req, res) {
   await db.collection('incidentes').get()
     .then(snapshot => {
       snapshot.forEach(doc => {
-        //console.log(doc.id, '=>', doc.data()); 
         let data = doc.data();
         data.id = doc.id;
         results.push(data);
-        //res.send(results);        
       });
     })
     .catch(error => {
@@ -37,7 +35,7 @@ app.get('/incidentes', async function (req, res) {
 app.get('/incidentes/:id', function (req, res) {
   id = req.params.id;
 
-  db.collection('incidentes').doc(id).get() 
+  db.collection('incidentes').doc(id).get()
     .then(doc => {
       if (!doc.exists) {
         console.log('No such document!');
@@ -47,7 +45,30 @@ app.get('/incidentes/:id', function (req, res) {
     })
     .catch(err => {
       console.log('Error getting document', err);
-    });   
+    });
+});
+
+app.get('/incidentes/autor/:id', async function (req, res) {
+  id = req.params.id;
+  results = [];
+  await db.collection('incidentes').where('autor', '==', id).get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        let data = doc.data();
+        data.id = doc.id;
+        results.push(data);
+      });
+    })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });
+
+    res.send(results);
 });
 
 // view engine setup
