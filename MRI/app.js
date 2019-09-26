@@ -107,16 +107,22 @@ app.post('/incidentes', function (req, res) {
 
   db.collection('incidentes').add(data)
     .then(() => {
-      res.send("Object added");
+      res.json({
+          response: '200 OK'
+        }
+      );
     });
 });
 
-app.post('/lecciones/', function (req, res) {
+app.post('/lecciones', function (req, res) {
   let data = req.body;
 
   db.collection('lecciones').add(data)
     .then(() => {
-      res.send("Object added");
+      res.json({
+          response: '200 OK'
+        }
+      );
     });
 });
 
