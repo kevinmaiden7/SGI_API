@@ -9,6 +9,7 @@ var app = express();
 let results = [];
 
 // MIDDLEWARES
+
 app.use(express.json());
 
 app.use((req,res,next)=>{
@@ -22,9 +23,10 @@ app.use((req,res,next)=>{
   });
 
 //GET
+
 app.get('/', async function (req, res) {
   results = [];
-  await db.collection('incidentes').get()
+  await db.collection('lecciones').get()
     .then(snapshot => {
       snapshot.forEach(doc => {
         let data = doc.data();
@@ -38,50 +40,12 @@ app.get('/', async function (req, res) {
   res.send(results);
 });
 
-app.get('/:id', function (req, res) {
-  id = req.params.id;
-  db.collection('incidentes').doc(id).get()
-    .then(doc => {
-      if (!doc.exists) {
-        console.log('No such document!');
-      } else {
-        res.send(doc.data());
-      }
-    })
-    .catch(err => {
-      console.log('Error getting document', err);
-    });
-});
-
-app.get('/autor/:id', async function (req, res) {
-  id = req.params.id;
-  results = [];
-  await db.collection('incidentes').where('autor', '==', id).get()
-    .then(snapshot => {
-      if (snapshot.empty) {
-        console.log('No matching documents.');
-        return;
-      }
-
-      snapshot.forEach(doc => {
-        let data = doc.data();
-        data.id = doc.id;
-        results.push(data);
-      });
-    })
-    .catch(err => {
-      console.log('Error getting documents', err);
-    });
-
-    res.send(results);
-});
-
 //POST
 
 app.post('/', function (req, res) {
   let data = req.body;
 
-  db.collection('incidentes').add(data)
+  db.collection('lecciones').add(data)
     .then(() => {
       res.json({
           response: '200 OK'
