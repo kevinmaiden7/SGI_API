@@ -2,14 +2,18 @@ var createError = require('http-errors');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-let db = require('../BD/firebase');
+var functions = require('../BD/firebase');
+let db = functions.db;
+let admin = functions.admin;
 
 var app = express();
 
 let results = [];
 
 // MIDDLEWARES
+app.use(express.urlencoded({extended: true}));  
 app.use(express.json());
+
 
 app.use((req,res,next)=>{
   res.header("Access-Control-Allow-Origin", "*");
@@ -98,6 +102,7 @@ app.get('/investigador/:id', async function (req, res) {
 
     res.send(results);
 });
+
 //POST
 
 app.post('/', function (req, res) {
@@ -110,6 +115,20 @@ app.post('/', function (req, res) {
         }
       );
     });
+});
+
+// PUT
+
+app.put('/:id', function (req, res) {
+  let data = req.body;
+  id = req.params.id;
+  
+  db.collection('incidentes').doc(id).update(data);
+
+  res.json({
+    response: '200 OK'
+  }
+);
 });
 
 // view engine setup
