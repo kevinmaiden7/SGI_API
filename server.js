@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use('/incidentes', incidentesRoute); // Ruta de acceso a la API de reporte de incidentes
 app.use('/lecciones', leccionesRoute); // Ruta de acceso a la API de lecciones
-app.use('/gestion-incidentes', gestionIncidentesRoute); // Ruta de acceso a la API de lecciones
+app.use('/gestion-incidentes', gestionIncidentesRoute); // Ruta de acceso a la API de gestion de incidentes
 
 var port = process.env.PORT || 3000;
 
