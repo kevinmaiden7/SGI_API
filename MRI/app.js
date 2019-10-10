@@ -76,6 +76,28 @@ app.get('/autor/:id', async function (req, res) {
     res.send(results);
 });
 
+app.get('/investigador/:id', async function (req, res) {
+  id = req.params.id;
+  results = [];
+  await db.collection('incidentes').where('investigadores', 'array-contains', id).get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        let data = doc.data();
+        data.id = doc.id;
+        results.push(data);
+      });
+    })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });
+
+    res.send(results);
+});
 //POST
 
 app.post('/', function (req, res) {
