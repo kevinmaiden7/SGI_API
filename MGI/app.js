@@ -6,8 +6,6 @@ let db = require('../BD/firebase');
 
 var app = express();
 
-let results = [];
-
 // MIDDLEWARES
 
 app.use(express.json());
@@ -22,35 +20,15 @@ app.use((req,res,next)=>{
   next();
   });
 
-// GET
+// PUT
 
-app.get('/', async function (req, res) {
-  results = [];
-  await db.collection('lecciones').get()
-    .then(snapshot => {
-      snapshot.forEach(doc => {
-        let data = doc.data();
-        data.id = doc.id;
-        results.push(data);
-      });
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  res.send(results);
-});
-
-// POST
-
-app.post('/', function (req, res) {
-  let data = req.body;
-
-  db.collection('lecciones').add(data)
-    .then(() => {
-      res.json({
-          response: '200 OK'
-        }
-      );
+app.put('/:id', function (req, res) {
+    let data = req.body;
+    id = req.params.id;
+    db.collection('incidentes').doc(id).update(data);
+  
+    res.json({
+      response: '200 OK'
     });
 });
 

@@ -7,5 +7,4 @@ admin.initializeApp({
 });
 let db = admin.firestore(); // Acesso a Firestore
 
-module.exports = {db, admin};
-
+module.exports = db;
